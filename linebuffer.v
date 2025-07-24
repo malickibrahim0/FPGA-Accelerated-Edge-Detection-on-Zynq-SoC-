@@ -17,8 +17,8 @@
 // Revision 0.01 - File Created
 // Additional Comments: // credit to Vipin Kizhepatt
 
-// Assumptions: One pixel at at time, size of the image 512x512
-// This also how you design a Ram also (symetric Ram)
+// Assumptions: We will process a grayscale image where each pixel is one byte.
+// The image size is 512x512 pixels.
 //////////////////////////////////////////////////////////////////////////////////
 
 
@@ -40,7 +40,7 @@ begin
     if(i_data_valid)
         line[wrPntr] <= i_data;
 end
-
+//When new pixel data is valid, write it to the buffer at the current wrPntr location.
 always @(posedge i_clk)
 begin
     if(i_rst)
@@ -48,6 +48,8 @@ begin
     else if(i_data_valid)
         wrPntr <= wrPntr + 'd1;
 end
+//On reset, wrPntr is set to 0.
+//Otherwise, increment wrPntr on every valid input.
 
 assign o_data = {line[rdPntr],line[rdPntr+1],line[rdPntr+2]};
 
@@ -58,6 +60,7 @@ begin
     else if(i_rd_data)
         rdPntr <= rdPntr + 'd1;
 end
-
+//On reset, rdPntr is reset to 0.
+//On each i_rd_data pulse, it advances the read pointer by 1.
 
 endmodule
